@@ -3,9 +3,7 @@ import "./ExpensesList.css";
 import ExpenseItem from "./ExpenseItem";
 
 const ExpensesList = (props) => {
-  console.log(props.items.length);
   if (props.items.length === 0) {
-    console.log("cve");
     return (
       <h2 className="expenses-list-fallback">
         Nu avem cheltuieli trecute in anul acesta
