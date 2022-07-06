@@ -1,37 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./components/Expenses/ExpenseItem.css";
 import NewExpense from "./components/NewExpenses/NewExpense";
 import Expenses from "./components/Expenses/Expenses";
-
-const DUMMY = [
-  {
-    id: "1",
-    title: "Casa",
-    price: "1000",
-    date: new Date(2021, 5, 21),
-  },
-  {
-    id: "2",
-    title: "Masina",
-    price: "12",
-    date: new Date(2022, 1, 22),
-  },
-  {
-    id: "3",
-    title: "Telefon",
-    price: "101",
-    date: new Date(2020, 7, 11),
-  },
-  {
-    id: "4",
-    title: "Ceas",
-    price: "45",
-    date: new Date(2022, 6, 3),
-  },
-];
+import axios from "axios";
 
 function App() {
-  const [expense, setExpenses] = useState(DUMMY);
+  const [expense, setExpenses] = useState([]);
+  const url = 'http://localhost:3000/expense';
+
+  useEffect(() => {
+    getAllExpense();
+}, []);
+
+  const getAllExpense = () => {
+    axios.get(url)
+    .then((res) => {
+      console.log(res)
+      console.log(res.data)
+      const allExpenses = res.data;
+    }).catch((err) => console.log(err))
+  }
+
   const addExpenseHandler = (expense) => {
     setExpenses((prevExtenses) => {
       return [expense, ...prevExtenses];
@@ -40,7 +29,7 @@ function App() {
 
   return (
     <div>
-      <h2>Administreazăți cheltuielile</h2>
+      <h2 className="title-expenses">Administreazăți cheltuielile 😄</h2>
       <NewExpense onAddExpense={addExpenseHandler} />
       <Expenses items={expense} />
     </div>

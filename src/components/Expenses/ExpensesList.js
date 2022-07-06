@@ -6,7 +6,7 @@ const ExpensesList = (props) => {
   if (props.items.length === 0) {
     return (
       <h2 className="expenses-list-fallback">
-        Nu avem cheltuieli trecute in anul acesta
+        Nu avem cheltuieli trecute în anul acesta.
       </h2>
     );
   }
