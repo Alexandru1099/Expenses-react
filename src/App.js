@@ -1,55 +1,37 @@
-import React from "react";
-import Card from "./components/UI/Card";
-import ExpenseItem from "./components/Expenses/ExpenseItem"
-import "./components/Expenses/ExpenseItem.css"
+import React, { useState, useEffect } from "react";
+import "./components/Expenses/ExpenseItem.css";
 import NewExpense from "./components/NewExpenses/NewExpense";
+import Expenses from "./components/Expenses/Expenses";
+import axios from "axios";
 
 function App() {
-  const expenses = [
-    {
-      id: '1',
-      title: 'Casa',
-      price: '1000$',
-      date: new Date(2021, 5, 21)
-    },
-    {
-      id: '2',
-      title: 'Masina',
-      price: '12$',
-      date: new Date(2022, 1, 22)
-    },
-    {
-      id: '3',
-      title: 'Telefon',
-      price: '101$',
-      date: new Date(2020, 7, 11)
-    },
-    {
-      id: '4',
-      title: 'Ceas',
-      price: '45$',
-      date: new Date(2022, 6, 3)
-    },
-  ]
+  const [expense, setExpenses] = useState([]);
+  const url = 'http://localhost:3000/expense';
+
+  useEffect(() => {
+    getAllExpense();
+}, []);
+
+  const getAllExpense = () => {
+    axios.get(url)
+    .then((res) => {
+      console.log(res)
+      console.log(res.data)
+      const allExpenses = res.data;
+    }).catch((err) => console.log(err))
+  }
+
+  const addExpenseHandler = (expense) => {
+    setExpenses((prevExtenses) => {
+      return [expense, ...prevExtenses];
+    });
+  };
+
   return (
     <div>
-      <h2>Incepem app</h2>
-      <NewExpense />
-      <Card className="expenses">
-        {expenses.map((expenses) => {
-          return (
-            <div key={expenses.id}>
-              <ExpenseItem
-                id={expenses.id}
-                title={expenses.title}
-                price={expenses.price}
-                date={expenses.date}
-              />
-            </div>
-          )
-
-        })}
-      </Card>
+      <h2 className="title-expenses">Administreazăți cheltuielile 😄</h2>
+      <NewExpense onAddExpense={addExpenseHandler} />
+      <Expenses items={expense} />
     </div>
   );
 }
